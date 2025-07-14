@@ -34,7 +34,7 @@ static class Window{
 	}
 
 	static int InitWindow(){
-		window = SDL_CreateWindow("Not well made clone of snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WindowFlags.SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("Not well made clone of snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1000, 1000, SDL_WindowFlags.SDL_WINDOW_SHOWN);
 
 		if (window == IntPtr.Zero){
 			Console.WriteLine($"There was a problem creating the window: {SDL_GetError()}, retrying.");
@@ -58,7 +58,9 @@ static class Window{
 	public static void MainLoop(){
 		while (running){
 			Render();
+			Program.Update();
 			PollEvents();
+			SDL_Delay(50);
 		}
 		DestroySDLElements();
 	}
@@ -66,7 +68,7 @@ static class Window{
 	static void Render(){
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
-		//TODO: ADD ALL OBJECT SPECIFIC RENDERING LOGIC FUNCTIONS
+		Player.Generics.RenderPlayer();
 		SDL_RenderPresent(renderer);
 	}
 
@@ -75,6 +77,13 @@ static class Window{
 			switch (e.type){
 				case SDL_EventType.SDL_QUIT:
 					running = false;
+					break;
+				case SDL_EventType.SDL_KEYDOWN:
+					switch(e.key.keysym.sym){
+						case SDL_Keycode.SDLK_LEFT:
+							Player.Generics.IncreaseLenght();
+							break;
+					}
 					break;
 			}
 		}
