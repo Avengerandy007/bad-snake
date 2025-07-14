@@ -1,2 +1,9 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+
+class Program{
+	public static void Main(){
+		Console.WriteLine("Hello from bad snake clone");
+		Window.Setup();
+		Window.MainLoop();
+	}
+}
