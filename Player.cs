@@ -6,13 +6,19 @@ namespace Player{
 	class Generics{
 		static protected List<Part> previousParts = new List<Part>();
 		static public int lenght = 0;
-		static protected PosVect position;
-		public SDL_Rect rect;
 		public const int speed = 50;
 
 		public static void Update(){
 			Program.playerHead.Move();
-			Console.WriteLine($"previousParts.Count(): {previousParts.Count()}, lenght = {lenght}");
+			if (Program.playerHead.CheckIfGameOver()){
+				RestartGame();
+			}
+		}
+
+		static void RestartGame(){
+			previousParts.Clear();
+			lenght = 0;
+			Program.playerHead = new Head();
 		}
 
 		public static void RenderPlayer(){
@@ -30,8 +36,10 @@ namespace Player{
 	}
 
 	class Head : Generics{
+		PosVect position;
 		public DirVect direction;
 		System.Diagnostics.Stopwatch moveStopwatch = new System.Diagnostics.Stopwatch();
+		public SDL_Rect rect;
 
 		public Head(){
 
@@ -65,6 +73,21 @@ namespace Player{
 				previousParts.Add(new Part());
 			}
 		}
+
+		public bool CheckIfGameOver(){
+			foreach(var part in previousParts){
+				if (CheckCollisions(position, part.position)){
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		bool CheckCollisions(PosVect objectA, PosVect objectB){
+			if (objectA.x == objectB.x && objectA.y == objectB.y) return true;
+			else return false;
+		}
 		
 		public void Render(){
 			SDL_RenderDrawRect(Window.renderer, ref rect);
@@ -75,10 +98,14 @@ namespace Player{
 	class Part : Generics{
 
 		SDL_Rect partRect;
+		public PosVect position;
 		public Part(){
 			partRect = Program.playerHead.rect;
 			partRect.x += -Program.playerHead.direction.x * speed;
 			partRect.y += -Program.playerHead.direction.y * speed;
+
+			position.x = partRect.x;
+			position.y = partRect.y;
 		}
 
 		public static void RenderParts(){
