@@ -4,32 +4,34 @@ using Vector;
 namespace Player{
 
 	class Generics{
-		static protected Queue<Part> previousParts = new Queue<Part>();
+		static protected List<Part> previousParts = new List<Part>();
 		static public int lenght = 0;
 		static protected PosVect position;
 		public SDL_Rect rect;
 
 		public static void Update(){
 			Program.playerHead.Move();
+			Console.WriteLine($"previousParts.Count(): {previousParts.Count()}, lenght = {lenght}");
 		}
 
 		public static void RenderPlayer(){
 			SDL_SetRenderDrawColor(Window.renderer, 0, 128, 0, 255);
 			Program.playerHead.Render();
-			Part.RenderParts();
+			if (previousParts.Count() >= 1) Part.RenderParts();
 			SDL_SetRenderDrawColor(Window.renderer, 0, 0, 0, 255);
 		}
 
 		public static void IncreaseLenght(){
 			lenght++;
-			previousParts.Append(new Part());
+			previousParts.Add(new Part());
 		}
 		
 	}
 
 	class Head : Generics{
 		int speed = 50;
-		DirVect direction;
+		public DirVect direction;
+		System.Diagnostics.Stopwatch moveStopwatch = new System.Diagnostics.Stopwatch();
 
 		public Head(){
 
@@ -41,22 +43,26 @@ namespace Player{
 			};
 
 			position = new PosVect(rect.x, rect.y);
-			direction = new DirVect("left");
+			direction.Change("up");
+
+			moveStopwatch.Start();
 
 		}
 
 		public void Move(){
+			if (moveStopwatch.Elapsed.TotalMilliseconds <= 500) return;
 			position.x += speed * direction.x;
 			position.y += speed * direction.y;
 			rect.x = position.x;
 			rect.y = position.y;
 			DestroyLastPart();
+			moveStopwatch.Restart();
 		}
 		
 		void DestroyLastPart(){
-			if (previousParts.Count() >= lenght && lenght != 0){
-				previousParts.Dequeue();
-				previousParts.Append(new Part());
+			if (lenght != 0){
+				previousParts.Remove(previousParts.First());
+				previousParts.Add(new Part());
 			}
 		}
 		
@@ -66,16 +72,17 @@ namespace Player{
 		}
 	}
 
-	class Part : Head{
+	class Part : Generics{
 
+		SDL_Rect partRect;
 		public Part(){
-			rect = Program.playerHead.rect;
+			partRect = Program.playerHead.rect;
 		}
 
 		public static void RenderParts(){
 		 	foreach (var part in previousParts){
-				SDL_RenderDrawRect(Window.renderer, ref part.rect);
-				SDL_RenderFillRect(Window.renderer, ref part.rect);
+				SDL_RenderDrawRect(Window.renderer, ref part.partRect);
+				SDL_RenderFillRect(Window.renderer, ref part.partRect);
 			}	
 		}
 	}

@@ -56,12 +56,14 @@ static class Window{
 	}
 
 	public static void MainLoop(){
+		inputStopwatch.Start();
 		while (running){
 			Render();
 			Program.Update();
 			PollEvents();
 			SDL_Delay(50);
 		}
+		inputStopwatch.Stop();
 		DestroySDLElements();
 	}
 
@@ -72,6 +74,8 @@ static class Window{
 		SDL_RenderPresent(renderer);
 	}
 
+	static System.Diagnostics.Stopwatch inputStopwatch = new System.Diagnostics.Stopwatch();
+
 	static void PollEvents(){
 		while(SDL_PollEvent(out SDL_Event e) == 1){
 			switch (e.type){
@@ -79,8 +83,25 @@ static class Window{
 					running = false;
 					break;
 				case SDL_EventType.SDL_KEYDOWN:
+					if (inputStopwatch.Elapsed.TotalMilliseconds <= 500) break;
+					inputStopwatch.Restart();
 					switch(e.key.keysym.sym){
 						case SDL_Keycode.SDLK_LEFT:
+							Program.playerHead.direction.Change("left");
+							break;
+
+						case SDL_Keycode.SDLK_RIGHT:
+							Program.playerHead.direction.Change("right");
+							break;
+
+						case SDL_Keycode.SDLK_UP:
+							Program.playerHead.direction.Change("up");
+							break;
+
+						case SDL_Keycode.SDLK_DOWN:
+							Program.playerHead.direction.Change("down");
+							break;
+						case SDL_Keycode.SDLK_g:
 							Player.Generics.IncreaseLenght();
 							break;
 					}

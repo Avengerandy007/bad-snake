@@ -13,21 +13,25 @@ namespace Vector{
 		public int x;
 		public int y;
 
-		public DirVect(string inDir){
-			switch(inDir){
+		public void Change(string inDir){
+			switch(inDir.ToLower()){
 				case "left":
+					if (x == 1) break;
 					x = -1;
 					y = 0;
 					break;
 				case "right":
+					if (x == -1) break;
 					x = 1;
 					y = 0;
 					break;
 				case "up":
+					if (y == 1) break;
 					x = 0;
 					y = -1;
 					break;
 				case "down":
+					if (y == -1) break;
 					x = 0;
 					y = 1;
 					break;
