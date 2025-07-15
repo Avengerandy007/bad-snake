@@ -41,6 +41,11 @@ class Apple : Generics{
 		Random randomSpawnCell = new Random();
 		int spawnCellX = randomSpawnCell.Next(0, 20);
 		int spawnCellY = randomSpawnCell.Next(0, 20);
+		foreach(var part in Player.Generics.previousParts){
+			if (part.position.x == spawnCellX * 50 && part.position.y == spawnCellY * 50){
+				return SetPos();
+			}
+		}
 		return new PosVect(spawnCellX * 50, spawnCellY * 50);
 	}
 }

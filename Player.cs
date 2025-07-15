@@ -4,13 +4,13 @@ using Vector;
 namespace Player{
 
 	class Generics{
-		static protected List<Part> previousParts = new List<Part>();
+		static public List<Part> previousParts = new List<Part>();
 		static public int lenght = 0;
 		public const int speed = 50;
 
 		public static void Update(){
 			Program.playerHead.Move();
-			if (Program.playerHead.CheckIfGameOver()){
+			if (Program.playerHead.CheckIfGameOver() || Program.playerHead.CheckIfCollidedWithWall()){
 				RestartGame();
 			}
 			if (Program.playerHead.CheckIfApple()){
@@ -35,7 +35,7 @@ namespace Player{
 			lenght++;
 			previousParts.Add(new Part());
 		}
-		
+
 	}
 
 	class Head : Generics{
@@ -95,6 +95,11 @@ namespace Player{
 		public void OnAppleEaten(){
 			IncreaseLenght();
 			Apple.Generics.CreateApple();
+		}
+
+		public bool CheckIfCollidedWithWall(){
+			if (position.x >= 1000 || position.x < 0 || position.y >= 1000 || position.y < 0) return true;
+			else return false;
 		}
 
 		bool CheckCollisions(PosVect objectA, PosVect objectB){
