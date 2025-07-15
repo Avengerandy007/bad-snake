@@ -25,7 +25,6 @@ namespace Player{
 		}
 
 		public static void RenderPlayer(){
-			SDL_SetRenderDrawColor(Window.renderer, 0, 128, 0, 255);
 			Program.playerHead.Render();
 			if (previousParts.Count() >= 1) Part.RenderParts();
 			SDL_SetRenderDrawColor(Window.renderer, 0, 0, 0, 255);
@@ -108,6 +107,7 @@ namespace Player{
 		}
 		
 		public void Render(){
+			SDL_SetRenderDrawColor(Window.renderer, 0, 0, 128, 255);
 			SDL_RenderDrawRect(Window.renderer, ref rect);
 			SDL_RenderFillRect(Window.renderer, ref rect);
 		}
@@ -127,6 +127,7 @@ namespace Player{
 		}
 
 		public static void RenderParts(){
+			SDL_SetRenderDrawColor(Window.renderer, 0, 128, 0, 255);
 		 	foreach (var part in previousParts){
 				SDL_RenderDrawRect(Window.renderer, ref part.partRect);
 				SDL_RenderFillRect(Window.renderer, ref part.partRect);
