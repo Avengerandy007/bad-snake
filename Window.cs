@@ -86,19 +86,19 @@ static class Window{
 					if (inputStopwatch.Elapsed.TotalMilliseconds <= 500) break;
 					inputStopwatch.Restart();
 					switch(e.key.keysym.sym){
-						case SDL_Keycode.SDLK_LEFT:
+						case SDL_Keycode.SDLK_LEFT or SDL_Keycode.SDLK_a:
 							Program.playerHead.direction.Change("left");
 							break;
 
-						case SDL_Keycode.SDLK_RIGHT:
+						case SDL_Keycode.SDLK_RIGHT or SDL_Keycode.SDLK_d:
 							Program.playerHead.direction.Change("right");
 							break;
 
-						case SDL_Keycode.SDLK_UP:
+						case SDL_Keycode.SDLK_UP or SDL_Keycode.SDLK_w:
 							Program.playerHead.direction.Change("up");
 							break;
 
-						case SDL_Keycode.SDLK_DOWN:
+						case SDL_Keycode.SDLK_DOWN or SDL_Keycode.SDLK_s:
 							Program.playerHead.direction.Change("down");
 							break;
 						case SDL_Keycode.SDLK_g:

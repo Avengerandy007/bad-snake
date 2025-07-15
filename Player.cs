@@ -8,6 +8,7 @@ namespace Player{
 		static public int lenght = 0;
 		static protected PosVect position;
 		public SDL_Rect rect;
+		public const int speed = 50;
 
 		public static void Update(){
 			Program.playerHead.Move();
@@ -29,7 +30,6 @@ namespace Player{
 	}
 
 	class Head : Generics{
-		int speed = 50;
 		public DirVect direction;
 		System.Diagnostics.Stopwatch moveStopwatch = new System.Diagnostics.Stopwatch();
 
@@ -77,6 +77,8 @@ namespace Player{
 		SDL_Rect partRect;
 		public Part(){
 			partRect = Program.playerHead.rect;
+			partRect.x += -Program.playerHead.direction.x * speed;
+			partRect.y += -Program.playerHead.direction.y * speed;
 		}
 
 		public static void RenderParts(){
