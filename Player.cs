@@ -13,6 +13,9 @@ namespace Player{
 			if (Program.playerHead.CheckIfGameOver()){
 				RestartGame();
 			}
+			if (Program.playerHead.CheckIfApple()){
+				Program.playerHead.OnAppleEaten();
+			}
 		}
 
 		static void RestartGame(){
@@ -82,6 +85,16 @@ namespace Player{
 			}
 
 			return false;
+		}
+
+		public bool CheckIfApple(){
+			if (CheckCollisions(position, Apple.Generics.appleObject.pos)) return true;
+			else return false;
+		}
+
+		public void OnAppleEaten(){
+			IncreaseLenght();
+			Apple.Generics.CreateApple();
 		}
 
 		bool CheckCollisions(PosVect objectA, PosVect objectB){

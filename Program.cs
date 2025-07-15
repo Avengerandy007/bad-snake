@@ -7,6 +7,7 @@ class Program{
 	public static void Main(){
 		Console.WriteLine("Hello from bad snake clone");
 		Window.Setup();
+		Apple.Generics.CreateApple();
 		Window.MainLoop();
 	}
 

@@ -71,6 +71,7 @@ static class Window{
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 		Player.Generics.RenderPlayer();
+		Apple.Generics.Render();
 		SDL_RenderPresent(renderer);
 	}
 
@@ -83,7 +84,7 @@ static class Window{
 					running = false;
 					break;
 				case SDL_EventType.SDL_KEYDOWN:
-					if (inputStopwatch.Elapsed.TotalMilliseconds <= 500) break;
+					if (inputStopwatch.Elapsed.TotalMilliseconds <= 100) break;
 					inputStopwatch.Restart();
 					switch(e.key.keysym.sym){
 						case SDL_Keycode.SDLK_LEFT or SDL_Keycode.SDLK_a:
